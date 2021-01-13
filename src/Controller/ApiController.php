@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Item;
 use App\Service\ApiService;
+use App\Service\ContestService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class ApiController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function newCateg(Request $request)
+    public function newCateg(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $categ = new Category();
@@ -41,7 +42,7 @@ class ApiController extends AbstractController
      * @param Category $categ
      * @return JsonResponse
      */
-    public function deleteCateg(Category $categ)
+    public function deleteCateg(Category $categ): JsonResponse
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($categ);
@@ -55,7 +56,7 @@ class ApiController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function newItem(Request $request)
+    public function newItem(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $item = new Item();
@@ -76,7 +77,7 @@ class ApiController extends AbstractController
      * @param Item $item
      * @return JsonResponse
      */
-    public function deleteItem(Item $item)
+    public function deleteItem(Item $item): JsonResponse
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($item);
@@ -94,11 +95,24 @@ class ApiController extends AbstractController
      * @param ApiService $service
      * @return JsonResponse
      */
-    public function getNbItem(Category $categ, ApiService $service)
+    public function getNbItem(Category $categ, ApiService $service): JsonResponse
     {
         $count = $service->getNbItemsByCateg($categ);
 
         return new JsonResponse($count);
     }
 
+
+    /**
+     * @Route("/nearest-zero",name="nearest_zero",methods={"POST"},options={"expose":true})
+     * @param Request $request
+     * @param ContestService $service
+     * @return JsonResponse
+     */
+    public function getNearestToZero(Request $request, ContestService $service): JsonResponse
+    {
+        return new JsonResponse($service->getNearestToZero(
+            json_decode($request->getContent())
+        ));
+    }
 }

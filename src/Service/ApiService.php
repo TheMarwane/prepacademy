@@ -12,7 +12,7 @@ class ApiService
      * @param Category $categ
      * @return int
      */
-    public function getNbItemsByCateg(Category $categ)
+    public function getNbItemsByCateg(Category $categ): int
     {
         $total = count($categ->getItems());
 
