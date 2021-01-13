@@ -104,6 +104,19 @@ class ApiController extends AbstractController
 
 
     /**
+     * @Route("/contest-reward",name="contest_reward",methods={"POST"},options={"expose":true})
+     * @param Request $request
+     * @param ContestService $service
+     * @return JsonResponse
+     */
+    public function getContestReward(Request $request, ContestService $service): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return new JsonResponse($service->getRewards($data['winnings'], $data['chaine']));
+    }
+
+    /**
      * @Route("/nearest-zero",name="nearest_zero",methods={"POST"},options={"expose":true})
      * @param Request $request
      * @param ContestService $service

@@ -6,6 +6,9 @@ class ContestService
 {
     public function getRewards(Array $winnings, int $chaine): int
     {
+        $nbContests = count($winnings);
+        if($chaine >= $nbContests) {return array_sum($winnings);} // si on peut participer à tous les concours
+
 
     }
 
